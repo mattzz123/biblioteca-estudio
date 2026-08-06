@@ -15,8 +15,8 @@ https://github.com/mattzz123/biblioteca-estudio
 
 ANTES de instalar nada:
 
-1. Leé los archivos del repo: README.md, SKILL.md, los tres de references/ y el
-   script scripts/biblio.py. Podés leerlos directo desde GitHub.
+1. Leé los archivos del repo: README.md, SKILL.md, los cuatro de references/ y
+   el script scripts/biblio.py. Podés leerlos directo desde GitHub.
 2. Decime en pocas líneas qué hace, y si ves algo que no deberías ejecutar o que
    te parezca raro.
 3. Recién si estás conforme, instalalo: creá la carpeta
