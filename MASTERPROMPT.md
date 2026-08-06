@@ -73,6 +73,7 @@ no "entender X", sino algo que se puede verificar.
 | Lo que decís | Lo que pasa |
 |--------------|-------------|
 | *"abrí la biblioteca"* | Te muestra tus temas y en qué estado está cada uno |
+| *"explicame `<concepto>`"* | Te lo explica anclado a tu trabajo, te chequea mientras, y lo deja escrito con tus palabras |
 | *"destilá este libro"* + el archivo o el link | Lo convierte en material accionable, no en otro resumen |
 | *"tomame un repaso de X"* | Quiz de a una pregunta, con corrección honesta y score |
 | *"¿qué estudiamos que aplique a X?"* | Busca en todo lo aprendido lo que sirve para ese trabajo |

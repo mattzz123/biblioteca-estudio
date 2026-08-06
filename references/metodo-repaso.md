@@ -11,15 +11,29 @@ arreglado algo, lanzado algo o roto algo — no haber terminado un capítulo.
 Ejemplos válidos: se corrigió la idempotencia de un bot → quiz de idempotencia.
 Se lanzó una campaña con CAPI → quiz de Pixel/atribución.
 
+## De dónde salen las preguntas
+
+**Del banco, no de la imaginación.** Las notas escritas con `explicame` llevan
+una sección `## Preguntas de control` con las preguntas que se hicieron mientras
+se explicaba, y la respuesta textual de esa vez.
+
+El quiz **saca de ahí**: re-pregunta sobre las mismas formulaciones para ver si
+las sostiene semanas después. Esa es la diferencia entre medir comprensión y
+medir memoria reciente. Preguntas nuevas se agregan solo si el trabajo real trajo
+un ángulo que el banco no cubre.
+
+Al terminar, se actualiza la fila del banco en `notas/<concepto>.md`: respuesta
+textual nueva, fecha, estado.
+
 ## Antes de armar la ronda
 
 ```bash
-python3 scripts/biblio.py pendientes     # si el CLI está disponible
-grep -rh "🔴\|🟡" temas/*/repasos/INDEX.md   # equivalente manual
+biblio pendientes
 ```
 
-Lista los subtemas en 🔴/🟡 de todos los temas ordenados por antigüedad, más
-señales de desbalance (leído sin evaluar, ratio lectura/práctica, temas pausados).
+Lista, ordenado por antigüedad: los subtemas en 🔴/🟡 de `repasos/INDEX.md`, las
+**preguntas de control** en 🔴/🟡 de las notas, y señales de desbalance (leído sin
+evaluar, ratio lectura/práctica, temas pausados).
 
 **Los rojos viejos entran sí o sí.** El sistema de repaso es reactivo por diseño
 —se dispara con trabajo real— y eso tiene un agujero: un subtema que cayó en
@@ -33,7 +47,7 @@ trabajo reciente.**
 ## Cómo se ejecuta
 
 1. **Una pregunta por vez.** No adelantar la siguiente ni mostrar la lista.
-2. Matías responde con sus palabras. **No hay opción múltiple** — el objetivo es
+2. **El usuario responde con sus palabras.** **No hay opción múltiple** — el objetivo es
    detectar comprensión, no reconocimiento.
 3. **Corrección inmediata** tras cada respuesta: qué estuvo bien, qué faltó, cuál
    era la respuesta completa. Sin suavizar: un ⚠️ dicho como ✅ no sirve.
@@ -61,8 +75,9 @@ fecha: YYYY-MM-DD
 ## Preguntas
 
 ### 1. <pregunta>
-**Respuesta de Matías (textual):** ...
+**Respuesta del usuario (textual):** ...
 **Corrección:** ...
+**Repaso:** ...        ← solo si falló: la re-explicación, en el momento
 **Resultado:** ✅ / ⚠️ / ❌
 
 ## Score
@@ -74,6 +89,12 @@ X/10
 
 La respuesta se transcribe **textual**, no parafraseada. La formulación propia
 es el dato: revela si el modelo mental es correcto o solo suena correcto.
+
+El campo **`Repaso:`** aparece solo cuando la respuesta falló, y lleva la
+re-explicación dada en el momento. Un ❌ sin `Repaso:` es una nota de que algo no
+se sabe; con `Repaso:`, es una segunda oportunidad de que entre. No se posterga
+para después: el momento en que quedó expuesto el hueco es el momento en que la
+explicación pega.
 
 ## Actualizar el INDEX
 

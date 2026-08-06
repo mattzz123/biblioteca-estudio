@@ -6,18 +6,29 @@ material de un tema que nunca vio antes sin explorar el filesystem.
 
 ## El ciclo
 
+Dos puertas de entrada, un solo camino de salida:
+
 ```
-fuente → destilado → nota → práctica → repaso → aplicación
+        fuente ──── destilar ────┐
+                                 ├──→ nota → práctica → repaso → aplicación
+  trabajo real ─── explicame ────┘
 ```
 
 | Paso | Pregunta que responde | Carpeta |
 |------|----------------------|---------|
 | Fuente | ¿de dónde saco el conocimiento? | `fuentes/` |
 | Destilado | ¿qué dice, convertido en accionable? | `fuentes/destilados/` |
+| **Explicación** | ¿qué es esto que apareció trabajando? | `notas/` |
 | Nota | ¿qué aprendí del concepto? | `notas/` |
 | Práctica | ¿qué hice de verdad? | `practica/` |
 | Repaso | ¿cuánto entendí realmente? | `repasos/` |
-| Aplicación | ¿cómo baja esto al negocio? | `aplicacion/` |
+| Aplicación | ¿cómo baja esto al trabajo? | `aplicacion/` |
+
+**Por qué dos puertas.** Buena parte de lo que se aprende de verdad no entra por
+un libro: entra porque algo se rompió, apareció un término desconocido, o hubo
+que decidir sin entender del todo. Un sistema que solo procesa fuentes deja ese
+conocimiento tirado en las notas del proyecto, que es donde nadie lo vuelve a
+buscar.
 
 Un tema sin `practica/` es lectura, no estudio.
 Un tema sin `repasos/` no tiene forma de saber si quedó algo.
@@ -101,6 +112,30 @@ nada", va `aplica_a: []` y `relevancia: fondo`.
 *Calibración de referencia (biblioteca del autor, 32 destilados de seguridad):
 12 alta · 8 media · 12 fondo.* Si un tema termina con 80% en `alta`, la
 clasificación está inflada y la búsqueda por proyecto deja de discriminar.
+
+## El banco de preguntas
+
+Toda nota escrita explicando un concepto cierra con:
+
+```markdown
+## Preguntas de control
+
+| # | Pregunta | Última respuesta | Fecha | Estado |
+|---|----------|------------------|-------|--------|
+| 1 | ¿Por qué el container alcanza esa IP? | "comparten kernel y red del host" | 2026-06-12 | 🟢 |
+| 2 | ¿Qué entrega el IMDS? | "no recuerdo" | 2026-06-12 | 🔴 |
+
+🟢 sostenida · 🟡 parcial · 🔴 falló · ⬜ sin evaluar
+```
+
+Es lo que conecta la explicación con el repaso: **el quiz saca de este banco**,
+no inventa preguntas nuevas. Así se mide si lo explicado quedó, en vez de medir
+qué se recuerda de lo último que se leyó.
+
+Reglas: 2-5 por concepto; cada una apunta a **un mecanismo**, no a una
+definición; la respuesta se guarda textual, sin corregir la redacción; una 🔴
+vuelve en la ronda siguiente. `biblio pendientes` las lista junto con los
+subtemas flojos.
 
 ## Reglas de naming
 

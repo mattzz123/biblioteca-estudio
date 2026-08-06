@@ -519,12 +519,53 @@ def _parse_progreso(path, slug):
     return filas
 
 
+def _parse_banco(nota, slug):
+    """Extrae la seccion '## Preguntas de control' de una nota."""
+    try:
+        lineas = nota.read_text(encoding="utf-8", errors="replace").splitlines()
+    except OSError:
+        return []
+    dentro, filas = False, []
+    for ln in lineas:
+        if ln.startswith("## "):
+            dentro = "preguntas de control" in ln.lower()
+            continue
+        if not dentro or not ln.startswith("|"):
+            continue
+        cols = [c.strip() for c in ln.strip().strip("|").split("|")]
+        if len(cols) < 5:
+            continue
+        _num, pregunta, respuesta, fecha, estado = cols[:5]
+        if not pregunta or pregunta.lower() == "pregunta" or set(pregunta) <= set("-: "):
+            continue
+        if "🔴" in estado:
+            nivel = "rojo"
+        elif "🟡" in estado:
+            nivel = "amarillo"
+        else:
+            continue
+        filas.append({
+            "tema": slug,
+            "subtema": f"{nota.stem} · {pregunta[:44]}",
+            "nivel": nivel,
+            "detalle": f'última respuesta: "{respuesta[:60]}"',
+            "ultima_eval": fecha or "-",
+            "dias": _dias_desde(fecha),
+            "origen": "banco",
+        })
+    return filas
+
+
 def cmd_pendientes(args):
     temas = scan_temas()
     filas, senales = [], []
     for t in temas:
         d = TEMAS / t["slug"]
         filas += _parse_progreso(d / "repasos" / "INDEX.md", t["slug"])
+        notas_dir = d / "notas"
+        if notas_dir.is_dir():
+            for nota in sorted(notas_dir.glob("*.md")):
+                filas += _parse_banco(nota, t["slug"])
         c = t["counts"]
         if c["destilados"] and not c["repasos"]:
             senales.append(f"{t['slug']}: {c['destilados']} destilado(s), 0 repasos — leído sin evaluar")

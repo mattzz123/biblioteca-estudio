@@ -19,6 +19,7 @@ Abrí **[MASTERPROMPT.md](MASTERPROMPT.md)** y seguí lo que dice. Son dos pasos
 |---------|--------|
 | [`SKILL.md`](SKILL.md) | El método que aplica tu asistente |
 | [`references/estructura-canonica.md`](references/estructura-canonica.md) | Cómo se arma un tema de estudio |
+| [`references/metodo-explicacion.md`](references/metodo-explicacion.md) | Cómo se enseña un concepto y queda registrado con tus palabras |
 | [`references/metodo-destilado.md`](references/metodo-destilado.md) | Cómo convertir un libro en algo accionable |
 | [`references/metodo-repaso.md`](references/metodo-repaso.md) | Cómo tomarte un quiz honesto |
 | [`scripts/biblio.py`](scripts/biblio.py) | Opcional — acelera, no es necesario |
@@ -39,11 +40,17 @@ Importa tanto como lo que sí hace:
 
 ## Cómo funciona
 
-Un tema no es una carpeta de PDFs. Es un ciclo:
+Un tema no es una carpeta de PDFs. Es un ciclo con **dos puertas de entrada**:
 
 ```
-fuente → destilado → nota → práctica → repaso → aplicación
+        fuente ──── destilar ────┐
+                                 ├──→ nota → práctica → repaso → aplicación
+  trabajo real ─── explicame ────┘
 ```
+
+Buena parte de lo que se aprende de verdad no entra por un libro: entra porque
+algo se rompió, apareció un término desconocido, o hubo que decidir sin entender
+del todo. Ese camino también se captura.
 
 Si falta la **práctica**, es lectura. Si faltan los **repasos**, no hay forma de
 saber si quedó algo. Si falta la **aplicación**, es un hobby y no una inversión.
@@ -70,6 +77,10 @@ temas/<tema>/
 3. **Lo aprendido apunta a tus proyectos.** Cada cosa que guardás lleva un campo
    `aplica_a`, así después podés preguntar *"¿qué sé que me sirva para esto?"* en
    vez de tener que acordarte.
+
+Y una regla de método: **el quiz sale de las preguntas que ya respondiste**, con
+tus palabras textuales guardadas. Así se mide si lo que entendiste quedó, en vez
+de medir qué recordás de lo último que leíste.
 
 ## Requisitos
 

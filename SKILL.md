@@ -1,8 +1,8 @@
 ---
 name: biblioteca
-description: Biblioteca de Estudio — estructura reutilizable para estudiar cualquier disciplina (seguridad, IA, marketing, idiomas, lo que sea) y hacer que lo aprendido sea consultable desde el trabajo diario. Usar cuando el usuario dice "abrir la biblioteca", "biblioteca de estudio", "quiero estudiar X", "nuevo tema de estudio", "destilar este libro/curso", "tomame un repaso", "quiz de X", "qué estudiamos que aplique a <proyecto>", "cargar material de estudio", o cuando aparece un libro, curso, paper o documento que hay que convertir en material accionable.
+description: Biblioteca de Estudio — estructura reutilizable para estudiar cualquier disciplina (seguridad, IA, marketing, idiomas, lo que sea) y hacer que lo aprendido sea consultable desde el trabajo diario. Usar cuando el usuario dice "abrir la biblioteca", "biblioteca de estudio", "quiero estudiar X", "nuevo tema de estudio", "explicame X", "qué es X", "enseñame cómo funciona X", "destilar este libro/curso", "tomame un repaso", "quiz de X", "qué estudiamos que aplique a <proyecto>", "cargar material de estudio", o cuando aparece un concepto desconocido en medio de un trabajo real, o un libro/curso/paper que hay que convertir en material accionable.
 metadata:
-  version: 2.0.0-portable
+  version: 2.1.0-portable
 ---
 
 # Biblioteca de Estudio
@@ -16,11 +16,17 @@ ningún archivo externo.
 
 ## Principio
 
-Un tema no es una carpeta de PDFs. Es un ciclo:
+Un tema no es una carpeta de PDFs. Es un ciclo con **dos puertas de entrada**:
 
 ```
-fuente → destilado → nota → práctica → repaso → aplicación
+        fuente ──── destilar ────┐
+                                 ├──→ nota → práctica → repaso → aplicación
+  trabajo real ─── explicame ────┘
 ```
+
+Buena parte de lo que se aprende de verdad no entra por un libro: entra porque
+algo se rompió, apareció un término desconocido, o hubo que decidir sin entender
+del todo. `explicame` captura eso; `destilar` procesa las fuentes.
 
 Si falta `practica/`, es lectura. Si falta `repasos/`, no hay forma de saber si
 quedó algo. Si falta `aplicacion/`, es un hobby y no una inversión.
@@ -67,7 +73,7 @@ operaciones tienen equivalente manual** y el skill funciona igual:
 | Crear tema | `biblio new <slug>` | crear el árbol a mano según el contrato |
 | Regenerar índice | `biblio index` | actualizar `INDEX.md` a mano |
 | Buscar | `biblio find <q>` | `grep -ri "<q>" temas/` |
-| Pendientes de repaso | `biblio pendientes` | leer cada `repasos/INDEX.md` y juntar los 🔴/🟡 |
+| Pendientes de repaso | `biblio pendientes` | leer cada `repasos/INDEX.md` y cada `## Preguntas de control`, juntar los 🔴/🟡 |
 
 Invocación: `python3 scripts/biblio.py <subcomando>` (o `BIBLIO_ROOT=<ruta>
 python3 scripts/biblio.py …` si la autodetección falla).
@@ -95,7 +101,20 @@ Después crear el árbol del contrato y completar `ROADMAP.md` con fases reales:
 cada fase con **criterio de "hecho" verificable**, no "entender X". Un roadmap
 sin criterio de corte es una lista de deseos.
 
-### 3. Destilar — `/biblioteca destilar <fuente>`
+### 3. Explicame — `/biblioteca explicame <concepto>`
+
+Ver `references/metodo-explicacion.md`. La **segunda puerta de entrada**: no
+procesa una fuente, procesa un concepto que apareció trabajando.
+
+Regla corta: anclar al trabajo real antes de definir, chequear comprensión
+**durante** y no al final, y cerrar pidiendo la reformulación con sus palabras
+— transcrita textual, sin corregirle la redacción.
+
+Salida: `temas/<tema>/notas/<concepto>.md` con el mecanismo, la cita textual de
+cómo lo explicó, y una sección **`## Preguntas de control`** (2-5 preguntas sobre
+mecanismos, no definiciones). Ese banco es de donde sale el quiz después.
+
+### 4. Destilar — `/biblioteca destilar <fuente>`
 
 Ver `references/metodo-destilado.md`. Regla corta: el destilado no resume el
 libro, extrae **lo que cambia una decisión**. Si un capítulo no produce ni un
@@ -104,17 +123,21 @@ libro, extrae **lo que cambia una decisión**. Si un capítulo no produce ni un
 Salida: `temas/<tema>/fuentes/destilados/<fuente-slug>.md` con frontmatter, alta
 en `fuentes/INDEX.md`, y los ítems accionables suben a `aplicacion/CHECKLIST.md`.
 
-### 4. Repasar — `/biblioteca repasar <tema>`
+### 5. Repasar — `/biblioteca repasar <tema>`
 
 Ver `references/metodo-repaso.md`. Regla corta: **una pregunta por vez**,
 corrección inmediata, sin adelantar la siguiente. Se toma después de trabajo
 real, no después de leer.
 
-Antes de armar el quiz, juntar los pendientes (`biblio pendientes` o leyendo los
-`repasos/INDEX.md`). Los 🔴 viejos entran sí o sí: un subtema en rojo hace 50
-días es material que se dio por estudiado y no lo está.
+Las preguntas salen del **banco** (`## Preguntas de control` de las notas), no de
+la imaginación: se re-pregunta sobre las mismas formulaciones para ver si las
+sostiene semanas después. Antes de armar la ronda, juntar los pendientes
+(`biblio pendientes`, o leyendo los `repasos/INDEX.md` y los bancos).
 
-### 5. Aplicar — `/biblioteca aplicar <tema> <proyecto>`
+Los 🔴 viejos entran sí o sí: un subtema en rojo hace 50 días es material que se
+dio por estudiado y no lo está.
+
+### 6. Aplicar — `/biblioteca aplicar <tema> <proyecto>`
 
 El puente estudio→trabajo. Buscar qué material aplica:
 
